@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/white"
+    tools:context=".Introduction0Fragment">
+
+    <ImageView
+        android:paddingTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:src="@drawable/intro0"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Identify Plants"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:gravity="center_horizontal"
+        android:paddingTop="40dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="You can identify the plants you don't know
+through your camera"
+        android:textColor="#7E7A7A"
+        android:textSize="16sp"
+        android:gravity="center_horizontal"
+        android:paddingTop="40dp"
+        />
+
+</LinearLayout>
