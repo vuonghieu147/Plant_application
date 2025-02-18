@@ -13,6 +13,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 
@@ -47,6 +51,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val View = inflater.inflate(R.layout.home, container, false)
+
         val buttonSpecies = View.findViewById<Button>(R.id.button_species)
         buttonSpecies.setOnClickListener {
             val intent = Intent(requireContext(),Species::class.java)
@@ -65,45 +70,9 @@ class HomeFragment : Fragment() {
         val welcomeMessage = View.findViewById<TextView>(R.id.welcome)
         welcomeMessage.text = "Welcome, $displayName"
 
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        if (takePictureIntent.resolveActivity(requireContext().packageManager) != null) {
-            val addingNew = View.findViewById<Button>(R.id.button_add)
-            addingNew.setOnClickListener {
-                if (ContextCompat.checkSelfPermission(
-                        requireContext(),
-                        Manifest.permission.CAMERA
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    // Yêu cầu quyền truy cập camera
-                    requestPermissions(
-                        arrayOf(Manifest.permission.CAMERA),
-                        REQUEST_CAMERA_PERMISSION
-                    )
-                } else {
-                    // Quyền truy cập camera đã được cấp
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-                }
-            }
-        }
         return View
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            capturedPhoto = data?.extras?.get("data") as? Bitmap
-            val addNewFragment = AddNewFragment()
-            val bundle = Bundle()
-            bundle.putParcelable("capturedPhoto", capturedPhoto)
-            addNewFragment.arguments = bundle
-
-            val fragmentManager = requireActivity().supportFragmentManager
-            val fragmentTransaction = fragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.frame_layout, addNewFragment)
-            fragmentTransaction.addToBackStack(null)
-            fragmentTransaction.commit()
-        }
-    }
     companion object {
         /**
          * Use this factory method to create a new instance of

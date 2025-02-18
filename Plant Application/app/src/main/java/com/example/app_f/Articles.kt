@@ -23,7 +23,7 @@ class Articles : AppCompatActivity() {
 
         val buttonBack = findViewById<ImageButton>(R.id.articles_back)
         buttonBack.setOnClickListener {
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
         val recyclerView: RecyclerView = findViewById(R.id.recycler_view_articles)
         recyclerView.layoutManager = LinearLayoutManager(this)
