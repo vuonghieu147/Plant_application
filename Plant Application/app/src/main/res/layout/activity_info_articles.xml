@@ -36,7 +36,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:background="@drawable/baseline_thumb_up_off_alt_24"
+            android:src="@drawable/baseline_thumb_up_off_alt_24"
+            android:background="@color/white"
             android:layout_gravity="center"/>
     </LinearLayout>
     <ImageView

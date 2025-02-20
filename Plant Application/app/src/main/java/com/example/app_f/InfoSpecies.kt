@@ -83,6 +83,7 @@ class InfoSpecies : AppCompatActivity() {
             val currImage: Any? = like.tag as? Int
             if (currImage == R.drawable.baseline_thumb_up_alt_24) {
                 like.setImageResource(R.drawable.baseline_thumb_up_off_alt_24)
+                like.setTag(R.drawable.baseline_thumb_up_off_alt_24)
                 if (email != null) {
                     db.collection(email).document("Species Liked")
                         .update("Species Liked", FieldValue.arrayRemove(documentId))
@@ -90,6 +91,7 @@ class InfoSpecies : AppCompatActivity() {
             }
             else if(currImage == R.drawable.baseline_thumb_up_off_alt_24){
                 like.setImageResource(R.drawable.baseline_thumb_up_alt_24)
+                like.setTag(R.drawable.baseline_thumb_up_alt_24)
                 if (email != null) {
                     db.collection(email).document("Species Liked")
                         .update("Species Liked", FieldValue.arrayUnion(documentId))
@@ -107,7 +109,6 @@ class InfoSpecies : AppCompatActivity() {
                     like.setImageResource(R.drawable.baseline_thumb_up_off_alt_24)
                     like.setTag(R.drawable.baseline_thumb_up_off_alt_24)
                 }
-
             }
         }
     }

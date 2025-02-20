@@ -131,7 +131,8 @@ class SignUpActivity : AppCompatActivity() {
                     val speciesData = HashMap<String, Any>()
                     collectionRef.document("species").set(speciesData)
                     collectionRef.document("articles").set(speciesData)
-
+                    collectionRef.document("Species Liked").set(mapOf("Species Liked" to listOf<String>()))
+                    collectionRef.document("Articles Liked").set(mapOf("Articles Liked" to listOf<String>()))
                     val intent = Intent(this,MainActivity::class.java)
                     startActivity(intent)
                     Toast.makeText(

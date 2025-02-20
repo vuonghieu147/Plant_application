@@ -2,6 +2,7 @@ package com.example.app_f
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -12,13 +13,12 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 
 class InfoArticles : AppCompatActivity() {
-    private lateinit var db: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info_articles)
 
-        db = FirebaseFirestore.getInstance()
+        val db = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
         val titleArticles = findViewById<TextView>(R.id.info_title_articles)
         val dayArticles = findViewById<TextView>(R.id.info_day_articles)
@@ -29,15 +29,17 @@ class InfoArticles : AppCompatActivity() {
 
         val buttonBack = findViewById<ImageButton>(R.id.info_back_articles)
         buttonBack.setOnClickListener {
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
+        val currentUser = auth.currentUser
+        val email = currentUser?.email
         val intent = intent
         val documentId = intent.getStringExtra("documentId")
+        Log.d("CHECK", "$documentId & $email")
 
         titleArticles.text = documentId
 
         val collectionRef = db.collection("articles")
-
 
         if (documentId != null) {
             collectionRef.document(documentId)
@@ -63,34 +65,40 @@ class InfoArticles : AppCompatActivity() {
                     Toast.makeText(this,"Error!!",Toast.LENGTH_SHORT).show()
                 }
         }
-        var like_Flag: Boolean = true
         val like = findViewById<ImageButton>(R.id.info_like_articles)
         like.setOnClickListener {
-            if (like_Flag) {
-                like.setImageResource(R.drawable.baseline_thumb_up_alt_24)
-
-                val name_Flow = documentId
-                val currentUser = auth.currentUser
-                val email = currentUser?.email
-                val add = name_Flow
-
-                if (email != null) {
-                    db.collection(email).document("articles").update("Name", FieldValue.arrayUnion(add))
-                }
-
-            } else {
+            val currImage: Any? = like.tag as? Int
+            Log.d("CHECK", "Current tag: $currImage")
+            if (currImage == R.drawable.baseline_thumb_up_alt_24) {
                 like.setImageResource(R.drawable.baseline_thumb_up_off_alt_24)
-                val name_Flow = documentId
-                val currentUser = auth.currentUser
-                val email = currentUser?.email
+                like.setTag(R.drawable.baseline_thumb_up_off_alt_24)
                 if (email != null) {
-                    db.collection(email).document("articles")
-
-                    val remove = name_Flow
-                    db.collection(email).document("articles").update("Name", FieldValue.arrayRemove(remove))
+                    db.collection(email).document("Articles Liked")
+                        .update("Articles Liked", FieldValue.arrayRemove(documentId))
                 }
             }
-            like_Flag = !like_Flag
+            else if(currImage == R.drawable.baseline_thumb_up_off_alt_24){
+                like.setImageResource(R.drawable.baseline_thumb_up_alt_24)
+                like.setTag(R.drawable.baseline_thumb_up_alt_24)
+                if (email != null) {
+                    db.collection(email).document("Articles Liked")
+                        .update("Articles Liked", FieldValue.arrayUnion(documentId))
+                    Log.d("CHECK", "empty")
+                }
+            }
+        }
+        if (email != null) {
+            db.collection(email).document("Articles Liked").get().addOnSuccessListener {
+                val data = it.get("Articles Liked") as? List<String> ?: listOf()
+                Log.d("CHECK", "Articles data: $data")
+                if (documentId in data) {
+                    like.setImageResource(R.drawable.baseline_thumb_up_alt_24)
+                    like.setTag(R.drawable.baseline_thumb_up_alt_24)
+                } else if (data.isEmpty() || documentId !in data) {
+                    like.setImageResource(R.drawable.baseline_thumb_up_off_alt_24)
+                    like.setTag(R.drawable.baseline_thumb_up_off_alt_24)
+                }
+            }
         }
     }
 }
