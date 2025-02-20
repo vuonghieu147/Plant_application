@@ -2,8 +2,8 @@ package com.example.app_f
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageButton
-import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +15,6 @@ class SpeciesLiked : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: SpeciesLikedAdapter
-    private val nameList: MutableList<SpeciesLikedData> = mutableListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_species_liked)
@@ -30,25 +29,25 @@ class SpeciesLiked : AppCompatActivity() {
         }
         recyclerView = findViewById(R.id.recycler_view_species_liked)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = SpeciesLikedAdapter(emptyList()) // Pass an empty list initially
+        adapter = SpeciesLikedAdapter(emptyList())
         recyclerView.adapter = adapter
+
         val currentUser = auth.currentUser
         val email = currentUser?.email
         if (email != null) {
-            db.collection(email).document("species").get()
-                .addOnSuccessListener { documentSnapshot ->
-                    if (documentSnapshot.exists()) {
-                        val dataMap = documentSnapshot.data
-                        if (dataMap != null) {
-                            for ((key, value) in dataMap) {
-                                if (key.startsWith("Name")) {
-                                    val name = value as String
-                                    val data = SpeciesLikedData(name)
-                                    nameList.add(data)
-                                }
-                            }
-                            adapter.notifyDataSetChanged()
+            db.collection(email).document("Species Liked").get()
+                .addOnSuccessListener {
+                    val data = it.get("Species Liked") as? List<String>
+                    val documentIds = ArrayList<String>()
+                    Log.d("CHECK","$data")
+                    if (data != null) {
+                        for (document in data) {
+                            documentIds.add(document)
                         }
+                        val flowers = documentIds.map { SpeciesLikedData(nameSpeciesLiked = it, documentId = it) }
+                        adapter = SpeciesLikedAdapter(flowers)
+                        recyclerView.layoutManager = LinearLayoutManager(this)
+                        recyclerView.adapter = adapter
                     }
                 }
                 .addOnFailureListener { exception ->

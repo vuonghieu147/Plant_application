@@ -109,7 +109,7 @@ class SignUpActivity : AppCompatActivity() {
         val containsDigit = inputPassword.contains(digitRegex)
         val containsSpecialChar = inputPassword.contains(specialChars)
 
-        if (inputPassword.length < 11 || !containsLowerCase || !containsUpperCase || !containsDigit ||!containsSpecialChar) {
+        if (inputPassword.length < 9 || !containsLowerCase || !containsUpperCase || !containsDigit ||!containsSpecialChar) {
             Toast.makeText(this, "Mật khẩu phải có ít nhất 11 ký tự bao gồm ít nhất một chữ cái, số và kí tự đặc biệt, viết thường và viết hoa", Toast.LENGTH_SHORT).show()
             return
         }

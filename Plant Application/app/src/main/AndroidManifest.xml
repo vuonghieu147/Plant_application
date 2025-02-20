@@ -20,6 +20,9 @@
         android:theme="@style/Theme.App_F"
         tools:targetApi="31">
         <activity
+            android:name=".ArticlesLiked"
+            android:exported="false" />
+        <activity
             android:name=".Introduction"
             android:exported="true">
             <intent-filter>
@@ -45,7 +48,7 @@
             android:exported="false" />
         <activity
             android:name=".NavHome"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".InfoSpecies"
             android:exported="false" />

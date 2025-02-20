@@ -1,3 +1,5 @@
 package com.example.app_f
 
-data class SpeciesLikedData (val nameSpeciesLiked: String)
+import com.google.firestore.v1.Document
+
+data class SpeciesLikedData (val nameSpeciesLiked: String, val documentId: String)

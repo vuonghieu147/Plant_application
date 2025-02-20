@@ -1,6 +1,7 @@
 package com.example.app_f
 
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,12 +17,17 @@ class SpeciesLikedAdapter(private val nameList: List<SpeciesLikedData>) : Recycl
     }
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val name: SpeciesLikedData = nameList[position]
-        holder.flowerName.text = name.nameSpeciesLiked
+        holder.speciesName.text = name.nameSpeciesLiked
+        holder.speciesName.setOnClickListener {
+            val intent = Intent(holder.itemView.context,InfoSpecies::class.java)
+            intent.putExtra("documentId", name.documentId)
+            holder.itemView.context.startActivity(intent)
+        }
     }
     override fun getItemCount(): Int {
         return nameList.size
     }
     class MyViewHolder(item: View): RecyclerView.ViewHolder(item){
-        val flowerName : TextView = item.findViewById(R.id.item_species_liked_name)
+        val speciesName : TextView = item.findViewById(R.id.item_species_liked_name)
     }
 }

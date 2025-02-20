@@ -110,7 +110,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
         android:background="@drawable/profile_select"
-        android:text="User's flower"
+        android:text="User's Species"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_articles_button" />

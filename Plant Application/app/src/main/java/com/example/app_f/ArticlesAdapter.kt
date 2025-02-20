@@ -1,7 +1,6 @@
 package com.example.app_f
 
 import android.content.Intent
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,8 +22,8 @@ class ArticlesAdapter(private val articles: ArrayList<ArticlesData>): RecyclerVi
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticlesAdapter.ViewHolder {
         val itemView1 = LayoutInflater.from(parent.context).inflate(R.layout.item_articles,parent,false)
-        val holder_1 = ArticlesAdapter.ViewHolder(itemView1)
-        return holder_1
+        val holder = ArticlesAdapter.ViewHolder(itemView1)
+        return holder
     }
 
     override fun getItemCount(): Int {
