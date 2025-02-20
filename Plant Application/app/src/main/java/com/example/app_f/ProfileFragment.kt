@@ -69,6 +69,10 @@ class ProfileFragment : Fragment() {
             val intent = Intent(requireContext(),UsersFlower::class.java)
             startActivity(intent)
         }
+        val userArticles = view.findViewById<Button>(R.id.profile_articles_button)
+        userArticles.setOnClickListener {
+            startActivity(Intent(requireContext(),ArticlesLiked::class.java))
+        }
         return view
     }
 
