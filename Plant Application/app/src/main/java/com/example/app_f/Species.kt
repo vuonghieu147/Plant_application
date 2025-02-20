@@ -40,7 +40,8 @@ class Species : AppCompatActivity() {
                     val documentId = document.id
                     documentIds.add(documentId)
                 }
-                val flowers = documentIds.map { FlowerName(flowerName = it, documentId = it) } // Tạo danh sách loài hoa từ danh sách document IDs
+                // Tạo danh sách loài hoa từ danh sách document IDs
+                val flowers = documentIds.map { FlowerName(flowerName = it, documentId = it) }
                 adapter = SpeciesAdapter(flowers)
                 recyclerView.layoutManager = LinearLayoutManager(this)
                 recyclerView.adapter = adapter

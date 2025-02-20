@@ -31,13 +31,6 @@ class SpeciesAdapter(private val nameList: List<FlowerName>) :RecyclerView.Adapt
     }
     class MyViewHolder(item: View):RecyclerView.ViewHolder(item){
         val flowerName :Button = itemView.findViewById(R.id.item_name)
-/*
-        init {
-            flowerName.setOnClickListener {
-                val intent = Intent(itemView.context, InfoSpecies::class.java)
-                itemView.context.startActivity(intent)
-            }
-        }
- */
+
     }
 }

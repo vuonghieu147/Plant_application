@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -28,10 +29,11 @@ class InfoSpecies : AppCompatActivity() {
         val db = FirebaseFirestore.getInstance()
         val storage = FirebaseStorage.getInstance()
         val storageRef = storage.reference
-
+        val currentUser = auth.currentUser
+        val email = currentUser?.email
         val buttonBack = findViewById<ImageButton>(R.id.infospecies_back)
         buttonBack.setOnClickListener {
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
 
         title = findViewById(R.id.info_name)
@@ -50,9 +52,9 @@ class InfoSpecies : AppCompatActivity() {
                 }
             }
             .addOnFailureListener { exception ->
-                Toast.makeText(this,"Error!!",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Error!!", Toast.LENGTH_SHORT).show()
             }
-        val imageView:ImageView = findViewById(R.id.info_image)
+        val imageView: ImageView = findViewById(R.id.info_image)
         val folderRef = storageRef.child("Species")
         folderRef.listAll()
             .addOnSuccessListener { listResult ->
@@ -65,45 +67,48 @@ class InfoSpecies : AppCompatActivity() {
                                 Picasso.get().load(uri).into(imageView)
                             }
                             .addOnFailureListener { exception ->
-                                Toast.makeText(this,"ERROR!!!",Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this, "ERROR!!!", Toast.LENGTH_SHORT).show()
                             }
                         break // Dừng vòng lặp sau khi tìm thấy tệp tin phù hợp
                     }
                 }
             }
             .addOnFailureListener { exception ->
-                Toast.makeText(this,"ERROR Folder!!!",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "ERROR Folder!!!", Toast.LENGTH_SHORT).show()
             }
 
 
-        var like_Flag: Boolean = true
         val like = findViewById<ImageButton>(R.id.info_like_species)
         like.setOnClickListener {
-            if (like_Flag) {
-                like.setImageResource(R.drawable.baseline_thumb_up_alt_24)
-
-                val name_Flow = documentId
-                val currentUser = auth.currentUser
-                val email = currentUser?.email
-                val add = name_Flow
-
-                if (email != null) {
-                    db.collection(email).document("species").update("Name", FieldValue.arrayUnion(add))
-                }
-
-            } else {
+            val currImage: Any? = like.tag as? Int
+            if (currImage == R.drawable.baseline_thumb_up_alt_24) {
                 like.setImageResource(R.drawable.baseline_thumb_up_off_alt_24)
-                val name_Flow = documentId
-                val currentUser = auth.currentUser
-                val email = currentUser?.email
                 if (email != null) {
-                    db.collection(email).document("species")
-
-                    val remove = name_Flow
-                    db.collection(email).document("species").update("Name", FieldValue.arrayRemove(remove))
+                    db.collection(email).document("Species Liked")
+                        .update("Species Liked", FieldValue.arrayRemove(documentId))
                 }
             }
-                like_Flag = !like_Flag
+            else if(currImage == R.drawable.baseline_thumb_up_off_alt_24){
+                like.setImageResource(R.drawable.baseline_thumb_up_alt_24)
+                if (email != null) {
+                    db.collection(email).document("Species Liked")
+                        .update("Species Liked", FieldValue.arrayUnion(documentId))
+                }
+            }
+        }
+        if (email != null) {
+            db.collection(email).document("Species Liked").get().addOnSuccessListener {
+                val data = it.get("Species Liked") as? List<String> ?: listOf()
+                Log.d("CHECK", "$data")
+                if (documentId in data) {
+                    like.setImageResource(R.drawable.baseline_thumb_up_alt_24)
+                    like.setTag(R.drawable.baseline_thumb_up_alt_24)
+                } else if (data.isEmpty() || documentId !in data) {
+                    like.setImageResource(R.drawable.baseline_thumb_up_off_alt_24)
+                    like.setTag(R.drawable.baseline_thumb_up_off_alt_24)
+                }
+
+            }
         }
     }
 }
