@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ArticlesLiked"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/articles_liked_back"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_gravity="left"
+            android:background="@color/white"
+            android:paddingTop="5dp"
+            android:src="@drawable/baseline_arrow_back_24" />
+        <TextView
+            android:id="@+id/title_articles_liked"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:paddingTop="5dp"
+            android:text="Articles Liked"
+            android:textColor="@color/black"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            />
+    </LinearLayout>
+    <View
+        android:id="@+id/ngang2_articles"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/black" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:background="#FFFFFF"
+        android:id="@+id/recycler_view_articles_liked"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        tools:listitem="@layout/item_articles"
+        />
+
+</LinearLayout>
