@@ -5,3 +5,5 @@ Developed a plant management application that enables users to browse plant spec
 IDE: Android Studio
 
 Firebase: Authentication, Cloud Firestore, Storage
+
+Program Language: Kolin
